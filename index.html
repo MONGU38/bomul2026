@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 보물창고</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f97316">
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Background Gradient */
+        .bg-gradient {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fef7ed 0%, #fefce8 100%);
+            padding: 1rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+        }
+
+        /* Search and Control Area */
+        .controls {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            border: none;
+            outline: none;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #ea580c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #dc2626;
+        }
+
+        .btn-secondary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-gray {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-gray:hover {
+            background: #4b5563;
+        }
+
+        .btn-small {
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-icon {
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Category Colors */
+        .category-level-1 { background: #dbeafe; border: 2px solid #93c5fd; color: #1e40af; }
+        .category-level-2 { background: #dcfce7; border: 2px solid #86efac; color: #166534; }
+        .category-level-3 { background: #f3e8ff; border: 2px solid #c084fc; color: #7c3aed; }
+        .category-level-4 { background: #fff7ed; border: 2px solid #fdba74; color: #c2410c; }
+        .category-level-5 { background: #fefce8; border: 2px solid #fde047; color: #a16207; }
+        .category-level-6 { background: #e0e7ff; border: 2px solid #a5b4fc; color: #4338ca; }
+        .category-level-7 { background: #fee2e2; border: 2px solid #fca5a5; color: #dc2626; }
+        .category-level-8 { background: #f0fdfa; border: 2px solid #5eead4; color: #0f766e; }
+        .category-level-9 { background: #fff7ed; border: 2px solid #fdba74; color: #c2410c; }
+        .category-level-10 { background: #ecfeff; border: 2px solid #67e8f9; color: #0891b2; }
+
+        /* Category Container */
+        .category {
+            margin-bottom: 0.5rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .category-header:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-right {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .category-name {
+            font-weight: 500;
+        }
+
+        .item-count {
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        /* Forms */
+        .form-container {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 2px solid #fed7aa;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 4rem;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Items */
+        .items-container {
+            margin-top: 0.5rem;
+        }
+
+        .items-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+
+        .items-toggle:hover {
+            color: #1f2937;
+        }
+
+        .item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .item-url {
+            font-size: 0.75rem;
+            color: #2563eb;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .item-url:hover {
+            text-decoration: underline;
+        }
+
+        .item-memo {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .modal {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 28rem;
+            width: 100%;
+            margin: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        /* Warning */
+        .warning {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Legend */
+        .legend {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .legend-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.125rem;
+        }
+
+        .legend-color-1 { background: #dbeafe; border: 1px solid #93c5fd; }
+        .legend-color-2 { background: #dcfce7; border: 1px solid #86efac; }
+        .legend-color-3 { background: #f3e8ff; border: 1px solid #c084fc; }
+        .legend-color-4 { background: #fff7ed; border: 1px solid #fdba74; }
+       
+        .legend-note {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        /* Search Results */
+        .search-results {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+        }
+
+        .search-results-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #1e40af;
+        }
+
+        .search-results-text {
+            font-weight: 500;
+        }
+
+        .search-results-count {
+            font-size: 0.875rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+            color: #6b7280;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        /* Help Section */
+        .help {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .help-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .help-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .help-item {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .bg-gradient {
+                padding: 0.5rem;
+            }
+            
+            .legend-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Current location info */
+        .current-location {
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+        }
+
+        .current-location-text {
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="title">📦 보물창고</h1>
+                <p class="subtitle">중요한 자료를 카테고리별로 정리하세요</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <!-- Search -->
+                <div class="search-container">
+                    <span style="font-size: 18px;">🔍</span>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="폴더명, 자료 제목, URL, 메모에서 검색..."
+                    >
+                    <button id="clearSearchBtn" class="btn-icon hidden" title="검색 초기화">
+                        <span style="font-size: 16px;">❌</span>
+                    </button>
+                </div>
+
+                <!-- Buttons -->
+<div class="button-group">
+    <button id="addCategoryBtn" class="btn btn-primary">
+        <span style="font-size: 20px;">+</span>
+        <span>새 카테고리 추가</span>
+    </button>
+    <button id="homeBtn" class="btn btn-secondary hidden">
+        <span>🏠</span>
+        <span>초기 화면</span>
+    </button>
+    <button id="resetBtn" class="btn btn-success">
+    <span>🔄</span>
+    <span>초기화면</span>
+</button>
+</div>
+            </div>
+
+            <!-- Category Form -->
+            <div id="categoryForm" class="form-container hidden">
+                <h3 id="categoryFormTitle" class="form-title">새 카테고리 추가</h3>
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        id="categoryNameInput" 
+                        class="form-input" 
+                        placeholder="카테고리 이름 (10자 이내)"
+                    >
+                </div>
+                <div class="form-actions">
+                    <button id="saveCategoryBtn" class="btn btn-success">
+                        <span style="font-size: 18px;">💾</span>
+                    </button>
+                    <button id="cancelCategoryBtn" class="btn btn-gray">
+                        <span style="font-size: 18px;">❌</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Warning -->
+            <div id="duplicateWarning" class="warning hidden">
+                ⚠️ <span id="warningText"></span>
+            </div>
+
+            <!-- Item Form -->
+            <div id="itemForm" class="form-container hidden">
+                <h3 id="itemFormTitle" class="form-title">새 자료 추가</h3>
+                <div id="currentLocation" class="current-location hidden">
+                    <div class="current-location-text">
+                        📁 현재 위치: <span id="currentLocationPath"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">제목</label>
+                    <input 
+                        type="text" 
+                        id="itemTitleInput" 
+                        class="form-input" 
+                        placeholder="자료 제목을 입력하세요"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input 
+                        type="url" 
+                        id="itemUrlInput" 
+                        class="form-input" 
+                        placeholder="https://example.com"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label">메모</label>
+                    <textarea 
+                        id="itemMemoInput" 
+                        class="form-textarea" 
+                        placeholder="메모를 입력하세요"
+                        rows="3"
+                    ></textarea>
+                </div>
+                <div class="form-actions">
+                    <button id="saveItemBtn" class="btn btn-success">
+                        <span style="font-size: 18px;">💾</span>
+                    </button>
+                    <button id="cancelItemBtn" class="btn btn-gray">
+                        <span style="font-size: 18px;">❌</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <h3 class="legend-title">카테고리 레벨 색상</h3>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <div class="legend-color legend-color-1"></div>
+                        <span>1차</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-color-2"></div>
+                        <span>2차</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-color-3"></div>
+                        <span>3차</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-color-4"></div>
+                        <span>4차</span>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Search Results Info -->
+            <div id="searchResults" class="search-results hidden">
+                <div class="search-results-header">
+                    <span style="font-size: 16px;">🔍</span>
+                    <span class="search-results-text">검색 결과: "<span id="searchTermDisplay"></span>"</span>
+                    <span class="search-results-count">(<span id="searchCount">0</span>개 폴더)</span>
+                </div>
+            </div>
+
+            <!-- Categories Container -->
+            <div id="categoriesContainer">
+                <!-- Categories will be rendered here -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-icon">📁</div>
+                <p>아직 카테고리가 없습니다.</p>
+                <p style="font-size: 0.875rem;">새 카테고리를 추가해보세요!</p>
+            </div>
+
+            <!-- No Search Results -->
+            <div id="noSearchResults" class="empty-state hidden">
+                <div class="empty-icon">🔍</div>
+                <p>검색 결과가 없습니다.</p>
+                <p style="font-size: 0.875rem;">다른 검색어를 시도해보세요.</p>
+            </div>
+
+            <!-- Help -->
+            <div class="help">
+                <h3 class="help-title">📋 사용법</h3>
+                <ul class="help-list">
+                    <li class="help-item">• 메인 카테고리(1차)부터 시작하여 4차까지 하위 카테고리를 만들 수 있습니다</li>
+                    <li class="help-item">• 각 레벨은 다른 색상으로 구분됩니다</li>
+                    <li class="help-item">• + 버튼으로 하위 카테고리를 추가할 수 있습니다</li>
+                    <li class="help-item">• 📄 버튼으로 각 폴더에 자료를 추가할 수 있습니다</li>
+                    <li class="help-item">• 자료는 제목, URL, 메모를 저장할 수 있으며 모두 입력하지 않아도 됩니다</li>
+                    <li class="help-item">• 폴더를 펼치면 저장된 자료들을 제목으로 확인할 수 있습니다</li>
+                    <li class="help-item">• 자료나 폴더 삭제 시 확인 메시지가 나타납니다</li>
+                    <li class="help-item">• 화살표를 클릭하여 하위 카테고리나 자료를 접거나 펼칠 수 있습니다</li>
+                </ul>
+        </div>
+
+            <!-- Backup Section -->
+            <div class="help" style="margin-top: 1rem;">
+                <h3 class="help-title">💾 데이터 백업</h3>
+                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                    <button id="exportBtn" class="btn btn-success">
+                        <span>💾</span>
+                        <span>백업</span>
+                    </button>
+                    <button id="importBtn" class="btn btn-secondary">
+                        <span>📁</span>
+                        <span>복원</span>
+                    </button>
+                </div>
+                <p style="font-size: 0.75rem; color: #6b7280; text-align: center; margin-top: 0.5rem;">
+                    정기적으로 백업하여 소중한 데이터를 안전하게 보관하세요. 폰에서만 적용됩니다.
+                </p>
+            </div>
+        </div>
+    </div>
+<!-- Move/Copy Item Modal -->
+    <div id="moveModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 class="modal-title" id="moveModalTitle">자료 이동</h3>
+            <div class="modal-content">
+                <p>어느 폴더로 이동하시겠습니까?</p>
+                <div id="folderList" style="max-height: 300px; overflow-y: auto; margin: 1rem 0;">
+                    <!-- 폴더 목록이 여기에 들어감 -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelMoveBtn" class="btn btn-gray">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 class="modal-title">삭제 확인</h3>
+            <div class="modal-content">
+                <p>삭제를 하면 복구되지 않습니다.<br>
+                "<span id="deleteItemName"></span>"을(를) 꼭 삭제하시겠습니까?</p>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn" class="btn btn-gray">취소</button>
+                <button id="confirmDeleteBtn" class="btn btn-danger">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global State
+        let categories = [];
+        let expandedCategories = new Set();
+        let expandedItems = new Set();
+        let isCreating = false;
+        let editingId = null;
+        let selectedParent = null;
+        let addingItemTo = null;
+        let editingItem = null;
+        let searchTerm = '';
+        let filteredCategories = [];
+        let deleteConfirmData = null;
+
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const addCategoryBtn = document.getElementById('addCategoryBtn');
+        const homeBtn = document.getElementById('homeBtn');
+        const categoryForm = document.getElementById('categoryForm');
+        const categoryFormTitle = document.getElementById('categoryFormTitle');
+        const categoryNameInput = document.getElementById('categoryNameInput');
+        const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+        const cancelCategoryBtn = document.getElementById('cancelCategoryBtn');
+        const duplicateWarning = document.getElementById('duplicateWarning');
+        const warningText = document.getElementById('warningText');
+        const itemForm = document.getElementById('itemForm');
+        const itemFormTitle = document.getElementById('itemFormTitle');
+        const currentLocation = document.getElementById('currentLocation');
+        const currentLocationPath = document.getElementById('currentLocationPath');
+        const itemTitleInput = document.getElementById('itemTitleInput');
+        const itemUrlInput = document.getElementById('itemUrlInput');
+        const itemMemoInput = document.getElementById('itemMemoInput');
+        const saveItemBtn = document.getElementById('saveItemBtn');
+        const cancelItemBtn = document.getElementById('cancelItemBtn');
+        const searchResults = document.getElementById('searchResults');
+        const searchTermDisplay = document.getElementById('searchTermDisplay');
+        const searchCount = document.getElementById('searchCount');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const emptyState = document.getElementById('emptyState');
+        const noSearchResults = document.getElementById('noSearchResults');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteItemName = document.getElementById('deleteItemName');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Utility Functions
+        function generateId() {
+            return Date.now().toString();
+        }
+
+        function getColorClassForLevel(level) {
+            const colorMap = {
+                1: 'category-level-1', 2: 'category-level-2', 3: 'category-level-3', 4: 'category-level-4',
+                5: 'category-level-5', 6: 'category-level-6', 7: 'category-level-7', 8: 'category-level-8',
+                9: 'category-level-9', 10: 'category-level-10'
+            };
+            return colorMap[((level - 1) % 10) + 1];
+        }
+
+        // Data Management
+        function loadData() {
+            try {
+                const saved = localStorage.getItem('treasureBoxData');
+                return saved ? JSON.parse(saved) : [];
+            } catch (error) {
+                console.error('데이터 불러오기 실패:', error);
+                return [];
+            }
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem('treasureBoxData', JSON.stringify(categories));
+            } catch (error) {
+                console.error('데이터 저장 실패:', error);
+            }
+        }
+
+        function checkDuplicateName(newName, parentCategory = null) {
+            const categoriesToCheck = parentCategory ? parentCategory.children : categories;
+            return categoriesToCheck.some(cat => cat.name === newName);
+        }
+
+        function findCategoryById(id, categoryList = categories) {
+            for (let category of categoryList) {
+                if (category.id === id) {
+                    return category;
+                }
+                if (category.children && category.children.length > 0) {
+                    const found = findCategoryById(id, category.children);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        function findCategoryPath(targetId, categoryList = categories, path = []) {
+            for (let category of categoryList) {
+                const currentPath = [...path, category.name];
+                if (category.id === targetId) {
+                    return currentPath;
+                }
+                if (category.children && category.children.length > 0) {
+                    const childPath = findCategoryPath(targetId, category.children, currentPath);
+                    if (childPath) return childPath;
+                }
+            }
+            return null;
+        }
+
+        // Search Functions
+        function searchCategories(term) {
+            if (!term.trim()) {
+                filteredCategories = [];
+                return;
+            }
+
+            const searchInCategory = (category) => {
+                let hasMatch = false;
+                let matchedItems = [];
+                let matchedChildren = [];
+
+                // 카테고리 이름에서 검색
+                const categoryMatch = category.name.toLowerCase().includes(term.toLowerCase());
+
+                // 아이템에서 검색
+                if (category.items) {
+                    matchedItems = category.items.filter(item => 
+                        item.title.toLowerCase().includes(term.toLowerCase()) ||
+                        (item.url && item.url.toLowerCase().includes(term.toLowerCase())) ||
+                        (item.memo && item.memo.toLowerCase().includes(term.toLowerCase()))
+                    );
+                }
+
+                // 하위 카테고리에서 검색
+                if (category.children) {
+                    category.children.forEach(child => {
+                        const childResult = searchInCategory(child);
+                        if (childResult) {
+                            matchedChildren.push(childResult);
+                        }
+                    });
+                }
+
+                hasMatch = categoryMatch || matchedItems.length > 0 || matchedChildren.length > 0;
+
+          if (hasMatch) {
+    return {
+        ...category,
+        items: categoryMatch ? category.items : matchedItems,
+        children: matchedChildren.length > 0 ? matchedChildren : (categoryMatch ? category.children : []),
+        isSearchResult: true
+    };
+}
+
+                return null;
+            };
+
+            const results = categories.map(category => searchInCategory(category)).filter(Boolean);
+            filteredCategories = results;
+
+            // 검색된 결과와 그 부모들을 모두 펼치기
+            const allExpanded = new Set(expandedCategories);
+            const addAllIds = (cats) => {
+                cats.forEach(cat => {
+                    allExpanded.add(cat.id);
+                    if (cat.children && cat.children.length > 0) {
+                        addAllIds(cat.children);
+                    }
+                });
+            };
+            addAllIds(results);
+            expandedCategories = allExpanded;
+        }
+
+        // Category Management
+        function addCategory() {
+            const name = categoryNameInput.value.trim();
+            if (!name) return;
+
+             // 글자수 제한 확인
+    if ([...name].length > 10) {
+        showWarning('폴더명은 10자 이내로 입력해주세요');
+        return;
+    }
+            // 중복 이름 확인
+            if (checkDuplicateName(name, selectedParent)) {
+                showWarning('같은 폴더가 있습니다. 다른 폴더명을 입력해주세요');
+                return;
+            }
+
+            hideWarning();
+
+            const newCategory = {
+                id: generateId(),
+                name: name,
+                level: selectedParent ? selectedParent.level + 1 : 1,
+                parentId: selectedParent ? selectedParent.id : null,
+                children: [],
+                items: []
+            };
+
+            if (selectedParent) {
+                const updateCategories = (cats) => {
+                    return cats.map(cat => {
+                        if (cat.id === selectedParent.id) {
+                            return { ...cat, children: [...cat.children, newCategory] };
+                        }
+                        if (cat.children.length > 0) {
+                            return { ...cat, children: updateCategories(cat.children) };
+                        }
+                        return cat;
+                    });
+                };
+                categories = updateCategories(categories);
+            } else {
+                categories = [...categories, newCategory];
+            }
+
+            saveData();
+            hideCategoryForm();
+            renderApp();
+        }
+
+        function deleteCategory(categoryId) {
+            const deleteCategoryRecursive = (cats) => {
+                return cats.filter(cat => cat.id !== categoryId)
+                    .map(cat => ({
+                        ...cat,
+                        children: deleteCategoryRecursive(cat.children)
+                    }));
+            };
+            categories = deleteCategoryRecursive(categories);
+            saveData();
+            renderApp();
+        }
+
+        function updateCategoryName(categoryId, newName) {
+            const updateCategories = (cats) => {
+                return cats.map(cat => {
+                    if (cat.id === categoryId) {
+                        return { ...cat, name: newName };
+                    }
+                    if (cat.children.length > 0) {
+                        return { ...cat, children: updateCategories(cat.children) };
+                    }
+                    return cat;
+                });
+            };
+            categories = updateCategories(categories);
+            saveData();
+            editingId = null;
+            renderApp();
+        }
+
+        // Item Management
+        function saveItem() {
+            const title = itemTitleInput.value || '제목 없음';
+            const url = itemUrlInput.value;
+            const memo = itemMemoInput.value;
+
+            if (!title.trim() && !url.trim() && !memo.trim()) {
+                return;
+            }
+
+            const targetCategoryId = editingItem ? editingItem.categoryId : addingItemTo;
+            const newItem = {
+                id: editingItem ? editingItem.id : generateId(),
+                title: title,
+                url: url,
+                memo: memo,
+                createdAt: editingItem ? editingItem.createdAt : new Date().toISOString()
+            };
+
+            const updateCategories = (cats) => {
+                return cats.map(cat => {
+                    if (cat.id === targetCategoryId) {
+                        const updatedItems = editingItem 
+                            ? cat.items.map(item => item.id === editingItem.id ? newItem : item)
+                            : [...cat.items, newItem];
+                        return { ...cat, items: updatedItems };
+                    }
+                    if (cat.children.length > 0) {
+                        return { ...cat, children: updateCategories(cat.children) };
+                    }
+                    return cat;
+                });
+            };
+
+            categories = updateCategories(categories);
+            saveData();
+            hideItemForm();
+            renderApp();
+        }
+
+        function deleteItem(itemId, categoryId) {
+            const updateCategories = (cats) => {
+                return cats.map(cat => {
+                    if (cat.id === categoryId) {
+                        return { ...cat, items: cat.items.filter(item => item.id !== itemId) };
+                    }
+                    if (cat.children.length > 0) {
+                        return { ...cat, children: updateCategories(cat.children) };
+                    }
+                    return cat;
+                });
+            };
+            categories = updateCategories(categories);
+            saveData();
+            renderApp();
+        }
+
+        // UI State Management
+        function showCategoryForm(parent = null) {
+    // 4차 폴더에서 하위 폴더 생성 시도할 때 제한
+    if (parent && parent.level >= 4) {
+        alert('더 이상 폴더를 생성할 수 없습니다. 메인 카테고리를 새로 만드세요');
+        return;
+    }
+    
+    selectedParent = parent;
+    isCreating = true;
+    categoryFormTitle.textContent = parent ? `"${parent.name}" 하위 카테고리 추가` : '새 카테고리 추가';
+    categoryNameInput.value = '';
+    categoryForm.classList.remove('hidden');
+    categoryNameInput.focus();
+}
+
+        function hideCategoryForm() {
+            isCreating = false;
+            selectedParent = null;
+            categoryForm.classList.add('hidden');
+            hideWarning();
+        }
+
+        function showItemForm(categoryId, item = null) {
+            addingItemTo = item ? null : categoryId;
+            editingItem = item ? { ...item, categoryId } : null;
+            
+            itemFormTitle.textContent = item ? '자료 수정' : '새 자료 추가';
+            itemTitleInput.value = item ? item.title : '';
+            itemUrlInput.value = item ? item.url : '';
+            itemMemoInput.value = item ? item.memo : '';
+            
+            // 현재 위치 표시
+            const targetId = item ? item.categoryId || categoryId : categoryId;
+            const path = findCategoryPath(targetId);
+            if (path) {
+                currentLocationPath.textContent = path.join(' > ');
+                currentLocation.classList.remove('hidden');
+            } else {
+                currentLocation.classList.add('hidden');
+            }
+            
+            itemForm.classList.remove('hidden');
+            itemTitleInput.focus();
+        }
+
+        function hideItemForm() {
+            addingItemTo = null;
+            editingItem = null;
+            itemForm.classList.add('hidden');
+            currentLocation.classList.add('hidden');
+        }
+
+        function showWarning(message) {
+            warningText.textContent = message;
+            duplicateWarning.classList.remove('hidden');
+        }
+
+        function hideWarning() {
+            duplicateWarning.classList.add('hidden');
+        }
+
+        function showDeleteModal(type, id, name, categoryId = null) {
+            deleteConfirmData = { type, id, name, categoryId };
+            deleteItemName.textContent = name;
+            deleteModal.classList.remove('hidden');
+        }
+
+        function hideDeleteModal() {
+            deleteConfirmData = null;
+            deleteModal.classList.add('hidden');
+        }
+
+        function toggleCategory(categoryId) {
+            if (expandedCategories.has(categoryId)) {
+                expandedCategories.delete(categoryId);
+            } else {
+                expandedCategories.add(categoryId);
+            }
+            renderApp();
+        }
+
+        function toggleItems(categoryId) {
+            if (expandedItems.has(categoryId)) {
+                expandedItems.delete(categoryId);
+            } else {
+                expandedItems.add(categoryId);
+            }
+            renderApp();
+        }
+
+        // Rendering Functions
+        function renderCategory(category, depth = 0) {
+            const isExpanded = expandedCategories.has(category.id);
+            const isItemsExpanded = expandedItems.has(category.id);
+            const hasChildren = category.children && category.children.length > 0;
+            const hasItems = category.items && category.items.length > 0;
+            const colorClass = getColorClassForLevel(category.level);
+
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+            categoryDiv.style.marginLeft = `${depth * 10}px`;
+
+            categoryDiv.innerHTML = `
+                <div class="category-header ${colorClass}">
+                    <div class="category-left">
+                        ${(hasChildren || hasItems) ? `
+                            <button class="btn-icon" onclick="toggleCategory('${category.id}')" title="펼치기/접기">
+                                <span style="font-size: 16px;">${isExpanded ? '▼' : '▶'}</span>
+                            </button>
+                        ` : '<div style="width: 24px;"></div>'}
+                        <span style="font-size: 18px;">📁</span>
+                        ${editingId === category.id ? `
+                            <input 
+                                type="text" 
+                                value="${category.name}" 
+                                class="form-input" 
+                                style="width: 200px; padding: 0.25rem 0.5rem; font-size: 0.875rem;"
+                                onkeypress="if(event.key==='Enter') updateCategoryName('${category.id}', this.value)"
+                                onblur="updateCategoryName('${category.id}', this.value)"
+                                id="editInput${category.id}"
+                            >
+                            <button class="btn-icon" onclick="editingId=null; renderApp()" title="취소">
+                                <span style="font-size: 14px;">❌</span>
+                            </button>
+                        ` : `
+                            <span class="category-name">${category.name}</span>
+                            ${hasItems ? `<span class="item-count">${category.items.length}개</span>` : ''}
+                        `}
+                    </div>
+                    <div class="category-right">
+                        <button class="btn-icon" onclick="showItemForm('${category.id}')" title="자료 추가">
+                            <span style="font-size: 14px;">📄</span>
+                        </button>
+                        ${category.level < 4 ? `
+    <button class="btn-icon" onclick="showCategoryForm(findCategoryById('${category.id}'))" title="서브 카테고리 추가">
+        <span style="font-size: 14px;">+</span>
+    </button>
+` : ''}
+                        <button class="btn-icon" onclick="editingId='${category.id}'; renderApp()" title="이름 수정">
+                            <span style="font-size: 14px;">✏️</span>
+                        </button>
+                        <button class="btn-icon" onclick="showDeleteModal('category', '${category.id}', '${category.name}')" title="삭제" style="color: #dc2626;">
+                            <span style="font-size: 14px;">🗑️</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            if (isExpanded) {
+                const expandedDiv = document.createElement('div');
+                expandedDiv.style.marginTop = '0.5rem';
+
+                // Items section
+                if (hasItems) {
+                    const itemsDiv = document.createElement('div');
+                    itemsDiv.className = 'items-container';
+                    itemsDiv.style.marginLeft = `10px`;
+                    itemsDiv.style.marginBottom = '0.5rem';
+
+                    itemsDiv.innerHTML = `
+                        <button class="items-toggle" onclick="toggleItems('${category.id}')">
+                            <span style="font-size: 14px;">${isItemsExpanded ? '▼' : '▶'}</span>
+                            <span style="font-size: 14px;">📄</span>
+                            <span>자료 (${category.items.length}개)</span>
+                        </button>
+                    `;
+
+                    if (isItemsExpanded) {
+                        const itemsList = document.createElement('div');
+                        itemsList.style.marginTop = '0.25rem';
+
+                  category.items.forEach(item => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'item';
+
+                            // 검색 중일 때는 제목만, 아닐 때는 전체 정보 표시
+                            if (searchTerm) {
+                                itemDiv.innerHTML = `
+                                    <div class="item-content" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" style="cursor: pointer;">
+                                        <div class="item-title" style="color: #2563eb; text-decoration: underline;">${item.title}</div>
+                                    </div>
+                                    <div class="item-actions">
+                                        <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
+                                            <span style="font-size: 12px;">✏️</span>
+                                        </button>
+                                        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title}')" title="이동">
+                                            <span style="font-size: 12px;">📁</span>
+                                        </button>
+                                        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
+                                            <span style="font-size: 12px;">📋</span>
+                                        </button>
+                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
+                                            <span style="font-size: 12px;">🗑️</span>
+                                        </button>
+                                    </div>
+                                `;
+                           } else {
+                                itemDiv.innerHTML = `
+                                    <div class="item-content" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" style="cursor: pointer;">
+                                        <div class="item-title" style="color: #2563eb; text-decoration: underline;">${item.title}</div>
+                                    </div>
+                                  <div class="item-actions">
+        <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
+            <span style="font-size: 12px;">✏️</span>
+        </button>
+        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title}')" title="이동">
+            <span style="font-size: 12px;">📁</span>
+        </button>
+        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
+            <span style="font-size: 12px;">📋</span>
+        </button>
+        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
+            <span style="font-size: 12px;">🗑️</span>
+        </button>
+    </div>
+                                `;
+                            }
+                            itemsList.appendChild(itemDiv);
+                        });
+
+                        itemsDiv.appendChild(itemsList);
+                    }
+
+                    expandedDiv.appendChild(itemsDiv);
+                }
+
+                // Children categories
+                if (hasChildren) {
+                    const childrenDiv = document.createElement('div');
+                    category.children.forEach(child => {
+                        childrenDiv.appendChild(renderCategory(child, depth + 1));
+                    });
+                    expandedDiv.appendChild(childrenDiv);
+                }
+
+                categoryDiv.appendChild(expandedDiv);
+            }
+
+            // Auto-focus edit input
+            if (editingId === category.id) {
+                setTimeout(() => {
+                    const editInput = document.getElementById(`editInput${category.id}`);
+                    if (editInput) {
+                        editInput.focus();
+                        editInput.select();
+                    }
+                }, 0);
+            }
+
+            return categoryDiv;
+        }
+
+        function renderApp() {
+            const container = categoriesContainer;
+            container.innerHTML = '';
+
+            const currentCategories = searchTerm ? filteredCategories : categories;
+            
+           // Show/hide search results info
+if (searchTerm) {
+    searchTermDisplay.textContent = searchTerm;
+    searchCount.textContent = filteredCategories.length;
+    searchResults.classList.remove('hidden');
+    // homeBtn.classList.remove('hidden'); // 이 줄을 주석처리해서 파란색 버튼 안나오게 함
+} else {
+    searchResults.classList.add('hidden');
+    homeBtn.classList.add('hidden');
+}
+
+            // Show/hide empty states
+            if (categories.length === 0) {
+                emptyState.classList.remove('hidden');
+                noSearchResults.classList.add('hidden');
+            } else if (searchTerm && filteredCategories.length === 0) {
+                emptyState.classList.add('hidden');
+                noSearchResults.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                noSearchResults.classList.add('hidden');
+                
+                // Render categories
+                currentCategories.forEach(category => {
+                    container.appendChild(renderCategory(category));
+                });
+            }
+        }
+
+        // Event Listeners
+        function initializeEventListeners() {
+            // Search
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                searchCategories(searchTerm);
+                
+                if (searchTerm) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                    filteredCategories = [];
+                }
+                
+                renderApp();
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchTerm = '';
+                filteredCategories = [];
+                clearSearchBtn.classList.add('hidden');
+                renderApp();
+            });
+
+            homeBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchTerm = '';
+                filteredCategories = [];
+                clearSearchBtn.classList.add('hidden');
+                expandedCategories.clear();
+                expandedItems.clear();
+                renderApp();
+            });
+            // 초기화면 버튼
+document.getElementById('resetBtn').addEventListener('click', () => {
+    searchInput.value = '';
+    searchTerm = '';
+    filteredCategories = [];
+    clearSearchBtn.classList.add('hidden');
+    expandedCategories.clear();
+    expandedItems.clear();
+    renderApp();
+});
+
+            // Category form
+            addCategoryBtn.addEventListener('click', () => showCategoryForm());
+            saveCategoryBtn.addEventListener('click', addCategory);
+            cancelCategoryBtn.addEventListener('click', hideCategoryForm);
+            
+            categoryNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addCategory();
+            });
+
+            categoryNameInput.addEventListener('input', () => {
+                hideWarning();
+            });
+
+            // Item form
+            saveItemBtn.addEventListener('click', saveItem);
+            cancelItemBtn.addEventListener('click', hideItemForm);
+
+            // Delete modal
+            // Move modal events
+            document.getElementById('cancelMoveBtn').addEventListener('click', hideMoveModal);
+            document.getElementById('moveModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('moveModal')) {
+                    hideMoveModal();
+                }
+            });
+
+            // Modal background click
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    hideDeleteModal();
+                }
+            });
+            cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (deleteConfirmData) {
+                    if (deleteConfirmData.type === 'category') {
+                        deleteCategory(deleteConfirmData.id);
+                    } else {
+                        deleteItem(deleteConfirmData.id, deleteConfirmData.categoryId);
+                    }
+                }
+                hideDeleteModal();
+            });
+
+            // 백업/복원 버튼
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('importBtn').addEventListener('click', () => {
+                document.getElementById('importFile').click();
+            });
+            document.getElementById('importFile').addEventListener('change', importData);
+        }
+// Move/Copy Functions
+        let moveModalData = null;
+
+        function showMoveModal(itemId, fromCategoryId, itemTitle) {
+            moveModalData = { itemId, fromCategoryId, itemTitle, type: 'move' };
+            document.getElementById('moveModalTitle').textContent = '자료 이동';
+            document.querySelector('#moveModal .modal-content p').textContent = '어느 폴더로 이동하시겠습니까?';
+            renderFolderList();
+            document.getElementById('moveModal').classList.remove('hidden');
+        }
+
+        function showCopyModal(itemId, fromCategoryId, itemTitle) {
+            moveModalData = { itemId, fromCategoryId, itemTitle, type: 'copy' };
+            document.getElementById('moveModalTitle').textContent = '자료 복사';
+            document.querySelector('#moveModal .modal-content p').textContent = '어느 폴더로 복사하시겠습니까?';
+            renderFolderList();
+            document.getElementById('moveModal').classList.remove('hidden');
+        }
+
+        function renderFolderList() {
+            const folderList = document.getElementById('folderList');
+            folderList.innerHTML = '';
+
+            const renderFolder = (category, depth = 0) => {
+                const folderDiv = document.createElement('div');
+                folderDiv.style.marginLeft = `${depth * 10}px`;
+                folderDiv.style.padding = '0.5rem';
+                folderDiv.style.border = '1px solid #e5e7eb';
+                folderDiv.style.borderRadius = '0.25rem';
+                folderDiv.style.margin = '0.25rem 0';
+                folderDiv.style.cursor = 'pointer';
+                folderDiv.style.background = category.id === moveModalData.fromCategoryId ? '#f3f4f6' : 'white';
+                
+                if (category.id === moveModalData.fromCategoryId) {
+                    folderDiv.style.opacity = '0.5';
+                    folderDiv.innerHTML = `<span>📁 ${category.name} (현재 위치)</span>`;
+                } else {
+                    folderDiv.innerHTML = `<span>📁 ${category.name}</span>`;
+                    folderDiv.onclick = () => moveOrCopyItem(category.id, category.name);
+                    folderDiv.onmouseover = () => folderDiv.style.background = '#f9fafb';
+                    folderDiv.onmouseout = () => folderDiv.style.background = 'white';
+                }
+                
+                folderList.appendChild(folderDiv);
+
+                if (category.children) {
+                    category.children.forEach(child => renderFolder(child, depth + 1));
+                }
+            };
+
+            categories.forEach(category => renderFolder(category));
+        }
+
+        function moveOrCopyItem(toCategoryId, toCategoryName) {
+            const { itemId, fromCategoryId, itemTitle, type } = moveModalData;
+            
+            // 원본 아이템 찾기
+            let sourceItem = null;
+            const findItem = (cats) => {
+                for (let cat of cats) {
+                    const item = cat.items.find(item => item.id === itemId);
+                    if (item) return item;
+                    if (cat.children.length > 0) {
+                        const childItem = findItem(cat.children);
+                        if (childItem) return childItem;
+                    }
+                }
+                return null;
+            };
+            sourceItem = findItem(categories);
+
+            if (!sourceItem) return;
+
+            // 대상 폴더에 아이템 추가
+            const updateCategories = (cats) => {
+                return cats.map(cat => {
+                    if (cat.id === toCategoryId) {
+                        const newItem = {
+                            ...sourceItem,
+                            id: type === 'copy' ? generateId() : sourceItem.id
+                        };
+                        return { ...cat, items: [...cat.items, newItem] };
+                    }
+                    if (cat.children.length > 0) {
+                        return { ...cat, children: updateCategories(cat.children) };
+                    }
+                    return cat;
+                });
+            };
+
+            categories = updateCategories(categories);
+
+            // 이동의 경우 원본에서 제거
+            if (type === 'move') {
+                const removeFromSource = (cats) => {
+                    return cats.map(cat => {
+                        if (cat.id === fromCategoryId) {
+                            return { ...cat, items: cat.items.filter(item => item.id !== itemId) };
+                        }
+                        if (cat.children.length > 0) {
+                            return { ...cat, children: removeFromSource(cat.children) };
+                        }
+                        return cat;
+                    });
+                };
+                categories = removeFromSource(categories);
+            }
+
+            saveData();
+            document.getElementById('moveModal').classList.add('hidden');
+            alert(`✅ "${itemTitle}"을(를) "${toCategoryName}" 폴더로 ${type === 'move' ? '이동' : '복사'}했습니다!`);
+            renderApp();
+        }
+
+        function hideMoveModal() {
+            moveModalData = null;
+            document.getElementById('moveModal').classList.add('hidden');
+        }
+        // 백업 함수
+        function exportData() {
+            const data = {
+                categories: categories,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `보물창고_백업_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ 백업이 완료되었습니다!');
+        }
+
+        // 복원 함수
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.categories) {
+                        if (confirm('⚠️ 기존 데이터가 모두 교체됩니다. 계속하시겠습니까?')) {
+                            categories = data.categories;
+                            saveData();
+                            renderApp();
+                            alert('✅ 복원이 완료되었습니다!');
+                        }
+                    } else {
+                        alert('❌ 올바른 백업 파일이 아닙니다.');
+                    }
+                } catch (error) {
+                    alert('❌ 파일을 읽을 수 없습니다.');
+                }
+            };
+            reader.readAsText(file);
+            
+            // 파일 입력 초기화
+            event.target.value = '';
+        }
+        
+        // Initialize App
+        function initializeApp() {
+            categories = loadData();
+            initializeEventListeners();
+            renderApp();
+
+            // Service Worker registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/bo56/sw.js')
+                        .then(registration => {
+                            console.log('Service Worker registered successfully:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                });
+            }
+
+            // Handle shared data
+            window.addEventListener('load', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const sharedTitle = urlParams.get('title');
+                const sharedText = urlParams.get('text');
+                const sharedUrl = urlParams.get('url');
+                
+                if (sharedTitle || sharedText || sharedUrl) {
+                    console.log('공유된 데이터:', {
+                        title: sharedTitle,
+                        text: sharedText,
+                        url: sharedUrl
+                    });
+                    
+                    alert('공유된 데이터를 받았습니다!\n제목: ' + (sharedTitle || '없음') + '\nURL: ' + (sharedUrl || '없음') + '\n텍스트: ' + (sharedText || '없음') + '\n\n카테고리를 만든 후 수동으로 추가해주세요.');
+                }
+            });
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+</body>
+</html>
