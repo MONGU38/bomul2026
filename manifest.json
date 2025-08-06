@@ -6,18 +6,24 @@
   "display": "standalone",
   "background_color": "#fef7ed",
   "theme_color": "#f97316",
-  "icons": [
+ "icons": [
     {
-      "src": "./app_icon512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+        "src": "./app_icon512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
     },
     {
-      "src": "./app_icon1024.png",
-      "sizes": "1024x1024",
-      "type": "image/png",
-      "purpose": "any"
+        "src": "./app_icon512.png",
+        "sizes": "512x512", 
+        "type": "image/png",
+        "purpose": "maskable"
+    },
+    {
+        "src": "./app_icon1024.png",
+        "sizes": "1024x1024",
+        "type": "image/png", 
+        "purpose": "any"
     }
-  ]
+]
 }
