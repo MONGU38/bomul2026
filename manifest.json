@@ -1,12 +1,23 @@
 {
-  "name": "보물창고",
-  "start_url": "/index.html",  // 필수 추가
-  "icons": [
-    {
-      "src": "app_icon512.png",  // 512x512 PNG 파일 필수
-      "sizes": "512x512",
-      "type": "image/png",
-    
-    }
-  ]
+    "name": "보물창고",
+    "short_name": "보물창고",
+    "description": "중요한 자료를 카테고리별로 정리하는 앱",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#fef7ed",
+    "theme_color": "#f97316",
+    "icons": [
+        {
+            "src": "./app_icon512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./app_icon1024.png",
+            "sizes": "1024x1024",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
 }
