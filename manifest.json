@@ -6,7 +6,7 @@
       "src": "app_icon512.png",  // 512x512 PNG 파일 필수
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"        // 이 줄 추가
+    
     }
   ]
 }
