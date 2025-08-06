@@ -1,9 +1,12 @@
 {
+  "name": "보물창고",
+  "start_url": "/index.html",  // 필수 추가
   "icons": [
     {
-      "src": "app_icon512.png",  // 실제 파일명 정확히 기재
+      "src": "app_icon512.png",  // 512x512 PNG 파일 필수
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"        // 이 줄 추가
     }
   ]
 }
