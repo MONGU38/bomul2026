@@ -1,13 +1,14 @@
 {
-  "name": "보물창고",
-  "short_name": "보물창고",
-  "start_url": "/",
-  "icons": [{
-    "src": "icon.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }],
-  "theme_color": "#f97316",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "icons": [
+    {
+      "src": "app_icon512.png",  // 현재 정상
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "app_icon1024.png",  // 수정된 이름 반영
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
 }
