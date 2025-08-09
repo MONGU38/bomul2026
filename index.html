@@ -1285,8 +1285,8 @@
                                     </div>
                                 `;
                            } else {
-                                itemDiv.innerHTML = `
-                                    <div class="item-content" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" style="cursor: pointer;">
+                               itemDiv.innerHTML = `
+                                    <div class="item-content" onclick="${item.url ? `window.open('${item.url}', '_blank')` : `alert('URL이 없습니다!')`}" style="cursor: pointer;">
                                         <div class="item-title" style="color: #2563eb; text-decoration: underline;">${item.title}</div>
                                     </div>
                                   <div class="item-actions">
