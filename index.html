@@ -1641,7 +1641,131 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             // 파일 입력 초기화
             event.target.value = '';
         }
-        
+            // Folder Selection Modal Functions
+        function showFolderSelectionModal() {
+            // 폴더 선택 모달 HTML 동적 생성
+            const modalHTML = `
+                <div id="folderSelectionModal" class="modal-overlay">
+                    <div class="modal">
+                        <h3 class="modal-title">📁 저장할 폴더 선택</h3>
+                        <div class="modal-content">
+                            <p>🎬 공유받은 영상을 어느 폴더에 저장하시겠습니까?</p>
+                            <div id="folderSelectionList" style="max-height: 300px; overflow-y: auto; margin: 1rem 0;">
+                                <!-- 폴더 목록이 여기에 들어감 -->
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button onclick="closeFolderSelectionModal()" class="btn btn-gray">취소</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 모달을 body에 추가
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // 폴더 목록 렌더링
+            renderFolderSelectionList();
+        }
+
+        function renderFolderSelectionList() {
+            const folderList = document.getElementById('folderSelectionList');
+            folderList.innerHTML = '';
+
+            const renderFolder = (category, depth = 0) => {
+                const folderDiv = document.createElement('div');
+                folderDiv.style.marginLeft = `${depth * 15}px`;
+                folderDiv.style.padding = '0.75rem';
+                folderDiv.style.border = '1px solid #e5e7eb';
+                folderDiv.style.borderRadius = '0.5rem';
+                folderDiv.style.margin = '0.5rem 0';
+                folderDiv.style.cursor = 'pointer';
+                folderDiv.style.background = 'white';
+                folderDiv.style.transition = 'all 0.2s';
+                
+                const colorClass = getColorClassForLevel(category.level);
+                folderDiv.className = colorClass;
+                
+                folderDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 18px;">📁</span>
+                        <span style="font-weight: 500;">${category.name}</span>
+                        <span style="font-size: 0.75rem; opacity: 0.7;">(${category.level}차)</span>
+                    </div>
+                `;
+                
+                folderDiv.onclick = () => selectFolderAndSave(category.id, category.name);
+                folderDiv.onmouseover = () => {
+                    folderDiv.style.transform = 'scale(1.02)';
+                    folderDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                };
+                folderDiv.onmouseout = () => {
+                    folderDiv.style.transform = 'scale(1)';
+                    folderDiv.style.boxShadow = 'none';
+                };
+                
+                folderList.appendChild(folderDiv);
+
+                // 하위 폴더들도 표시
+                if (category.children && category.children.length > 0) {
+                    category.children.forEach(child => renderFolder(child, depth + 1));
+                }
+            };
+
+            categories.forEach(category => renderFolder(category));
+        }
+
+        function selectFolderAndSave(categoryId, categoryName) {
+            // 공유 데이터 가져오기
+            const sharedData = window.sharedData;
+            if (!sharedData) return;
+            
+            // 새 아이템 생성
+            const newItem = {
+                id: generateId(),
+                title: sharedData.title || '제목 없음',
+                url: sharedData.url || '',
+                memo: sharedData.text || '',
+                createdAt: new Date().toISOString()
+            };
+
+            // 선택된 폴더에 아이템 추가
+            const updateCategories = (cats) => {
+                return cats.map(cat => {
+                    if (cat.id === categoryId) {
+                        return { ...cat, items: [...cat.items, newItem] };
+                    }
+                    if (cat.children.length > 0) {
+                        return { ...cat, children: updateCategories(cat.children) };
+                    }
+                    return cat;
+                });
+            };
+
+            categories = updateCategories(categories);
+            saveData();
+            
+            // 모달 닫기
+            closeFolderSelectionModal();
+            
+            // 성공 메시지
+            alert(`✅ "${newItem.title}"이(가) "${categoryName}" 폴더에 저장되었습니다!`);
+            
+            // 화면 새로고침
+            renderApp();
+            
+            // 공유 데이터 정리
+            delete window.sharedData;
+        }
+
+        function closeFolderSelectionModal() {
+            const modal = document.getElementById('folderSelectionModal');
+            if (modal) {
+                modal.remove();
+            }
+            // 공유 데이터 정리
+            delete window.sharedData;
+        }
         // Initialize App
         function initializeApp() {
             categories = loadData();
@@ -1668,27 +1792,24 @@ document.getElementById('resetBtn').addEventListener('click', () => {
                 const sharedText = urlParams.get('text');
                 const sharedUrl = urlParams.get('url');
                 
-               if (sharedTitle || sharedText || sharedUrl) {
+              if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
                         title: sharedTitle,
                         text: sharedText,
                         url: sharedUrl
                     });
                     
-                    // 공유된 데이터로 자동으로 자료 추가 폼 열기
+                    // 공유된 데이터로 폴더 선택 모달 표시
                     if (categories.length > 0) {
-                        // 첫 번째 카테고리에 자동으로 추가하도록 설정
-                        const firstCategory = categories[0];
-                        showItemForm(firstCategory.id);
+                        // 공유된 데이터를 전역 변수에 저장
+                        window.sharedData = {
+                            title: sharedTitle,
+                            url: sharedUrl,
+                            text: sharedText
+                        };
                         
-                        // 폼에 공유된 데이터 자동 입력
-                        setTimeout(() => {
-                            if (sharedTitle) itemTitleInput.value = sharedTitle;
-                            if (sharedUrl) itemUrlInput.value = sharedUrl;
-                            if (sharedText) itemMemoInput.value = sharedText;
-                        }, 100);
-                        
-                        alert('🎉 유튜브에서 공유된 데이터입니다!\n자료 추가 폼이 열렸으니 원하는 폴더를 선택하고 저장하세요.');
+                        // 폴더 선택 모달 표시
+                        showFolderSelectionModal();
                     } else {
                         alert('📁 먼저 카테고리를 만든 후 공유 기능을 사용해주세요!');
                     }
@@ -1696,12 +1817,11 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             });
         }
 
+
+    
         // Start the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
     <input type="file" id="importFile" accept=".json" style="display: none;">
 </body>
-
 </html>
-
-
