@@ -1674,23 +1674,27 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
             const renderFolder = (category, depth = 0) => {
                 const folderDiv = document.createElement('div');
-                folderDiv.style.marginLeft = `${depth * 15}px`;
+                folderDiv.style.marginLeft = `${depth * 20}px`;
                 folderDiv.style.padding = '0.75rem';
-                folderDiv.style.border = '1px solid #e5e7eb';
+                folderDiv.style.border = '2px solid';
                 folderDiv.style.borderRadius = '0.5rem';
                 folderDiv.style.margin = '0.5rem 0';
                 folderDiv.style.cursor = 'pointer';
-                folderDiv.style.background = 'white';
                 folderDiv.style.transition = 'all 0.2s';
                 
                 const colorClass = getColorClassForLevel(category.level);
                 folderDiv.className = colorClass;
                 
+                // 레벨별 들여쓰기 시각화
+                const indentBars = '│ '.repeat(Math.max(0, depth));
+                const levelPrefix = depth > 0 ? '├─ ' : '';
+                
                 folderDiv.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-family: monospace; color: #888; font-size: 14px;">${indentBars}${levelPrefix}</span>
                         <span style="font-size: 18px;">📁</span>
                         <span style="font-weight: 500;">${category.name}</span>
-                        <span style="font-size: 0.75rem; opacity: 0.7;">(${category.level}차)</span>
+                        <span style="font-size: 0.75rem; opacity: 0.7; font-weight: bold;">(${category.level}차)</span>
                     </div>
                 `;
                 
