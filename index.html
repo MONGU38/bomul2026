@@ -1719,7 +1719,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             categories.forEach(category => renderFolder(category));
         }
 
-        function selectFolderAndSave(categoryId, categoryName) {
+       function selectFolderAndSave(categoryId, categoryName) {
             // 공유 데이터 가져오기
             const sharedData = window.sharedData;
             if (!sharedData) return;
@@ -1793,8 +1793,8 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             window.addEventListener('load', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const sharedTitle = urlParams.get('title');
-                const sharedText = urlParams.get('text');
-                const sharedUrl = urlParams.get('url');
+                const sharedText = urlParams.get('url');
+                const sharedUrl = urlParams.get('text');
                 
               if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
