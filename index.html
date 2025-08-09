@@ -1668,14 +1668,30 @@ document.getElementById('resetBtn').addEventListener('click', () => {
                 const sharedText = urlParams.get('text');
                 const sharedUrl = urlParams.get('url');
                 
-                if (sharedTitle || sharedText || sharedUrl) {
+               if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
                         title: sharedTitle,
                         text: sharedText,
                         url: sharedUrl
                     });
                     
-                    alert('공유된 데이터를 받았습니다!\n제목: ' + (sharedTitle || '없음') + '\nURL: ' + (sharedUrl || '없음') + '\n텍스트: ' + (sharedText || '없음') + '\n\n카테고리를 만든 후 수동으로 추가해주세요.');
+                    // 공유된 데이터로 자동으로 자료 추가 폼 열기
+                    if (categories.length > 0) {
+                        // 첫 번째 카테고리에 자동으로 추가하도록 설정
+                        const firstCategory = categories[0];
+                        showItemForm(firstCategory.id);
+                        
+                        // 폼에 공유된 데이터 자동 입력
+                        setTimeout(() => {
+                            if (sharedTitle) itemTitleInput.value = sharedTitle;
+                            if (sharedUrl) itemUrlInput.value = sharedUrl;
+                            if (sharedText) itemMemoInput.value = sharedText;
+                        }, 100);
+                        
+                        alert('🎉 유튜브에서 공유된 데이터입니다!\n자료 추가 폼이 열렸으니 원하는 폴더를 선택하고 저장하세요.');
+                    } else {
+                        alert('📁 먼저 카테고리를 만든 후 공유 기능을 사용해주세요!');
+                    }
                 }
             });
         }
@@ -1687,4 +1703,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 </body>
 
 </html>
+
 
