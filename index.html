@@ -1794,8 +1794,8 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             window.addEventListener('load', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const sharedTitle = urlParams.get('title');
-                const sharedText = urlParams.get('url');
-                const sharedUrl = urlParams.get('text');
+                const sharedText = urlParams.get('text');
+                const sharedUrl = urlParams.get('url');
                 
               if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
@@ -1830,3 +1830,4 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     <input type="file" id="importFile" accept=".json" style="display: none;">
 </body>
 </html>
+
