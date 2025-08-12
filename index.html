@@ -1116,7 +1116,7 @@
             editingItem = item ? { ...item, categoryId } : null;
             
             itemFormTitle.textContent = item ? '자료 수정' : '새 자료 추가';
-            itemTitleInput.value = item ? item.title.slice(0, 28) : '';
+            itemTitleInput.value = item ? item.title.slice(0, 20) : '';
             itemUrlInput.value = item ? item.url : '';
             itemMemoInput.value = item ? item.memo : '';
             
@@ -1728,7 +1728,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             // 새 아이템 생성
            const newItem = {
                 id: generateId(),
-                title: (sharedData.title || '제목 없음').slice(0, 28),
+                title: (sharedData.title || '제목 없음').slice(0, 20),
                 url: sharedData.url || '',
                 memo: sharedData.text || '',
                 createdAt: new Date().toISOString()
@@ -1830,6 +1830,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     <input type="file" id="importFile" accept=".json" style="display: none;">
 </body>
 </html>
+
 
 
 
