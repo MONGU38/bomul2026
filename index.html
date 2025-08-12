@@ -1116,7 +1116,7 @@
             editingItem = item ? { ...item, categoryId } : null;
             
             itemFormTitle.textContent = item ? '자료 수정' : '새 자료 추가';
-            itemTitleInput.value = item ? item.title : '';
+            itemTitleInput.value = item ? item.title.slice(0, 28) : '';
             itemUrlInput.value = item ? item.url : '';
             itemMemoInput.value = item ? item.memo : '';
             
@@ -1830,4 +1830,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     <input type="file" id="importFile" accept=".json" style="display: none;">
 </body>
 </html>
+
 
