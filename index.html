@@ -1725,10 +1725,10 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             const sharedData = window.sharedData;
             if (!sharedData) return;
             
-            // 새 아이템 생성
+           // 새 아이템 생성
             const newItem = {
                 id: generateId(),
-                title: sharedData.title || '제목 없음',
+                title: (sharedData.title || '제목 없음').slice(0, 20),
                 url: sharedData.url || '',
                 memo: sharedData.text || '',
                 createdAt: new Date().toISOString()
