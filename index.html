@@ -625,7 +625,6 @@
                         id="itemTitleInput" 
                         class="form-input" 
                         placeholder="자료 제목을 입력하세요"
-                        maxlength="20"
                     >
                 </div>
                 <div class="form-group">
@@ -1116,7 +1115,7 @@
             editingItem = item ? { ...item, categoryId } : null;
             
             itemFormTitle.textContent = item ? '자료 수정' : '새 자료 추가';
-            itemTitleInput.value = item ? item.title.slice(0, 20) : '';
+            itemTitleInput.value = item ? item.title : '';
             itemUrlInput.value = item ? item.url : '';
             itemMemoInput.value = item ? item.memo : '';
             
@@ -1280,9 +1279,9 @@
                                         <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
                                             <span style="font-size: 12px;">📋</span>
                                         </button>
-                                      <button class="btn-icon" onclick="showItemForm('${category.id}')" title="자료 추가">
-                            <span style="font-size: 14px;">📄</span>
-                        </button>
+                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
+                                            <span style="font-size: 12px;">🗑️</span>
+                                        </button>
                                     </div>
                                 `;
                            } else {
@@ -1300,7 +1299,7 @@
         <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
             <span style="font-size: 12px;">📋</span>
         </button>
-       <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title.replace(/'/g, '\\\\\\'')}', '${category.id}')" title="삭제" style="color: #dc2626;">
+        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
             <span style="font-size: 12px;">🗑️</span>
         </button>
     </div>
@@ -1726,9 +1725,9 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             if (!sharedData) return;
             
             // 새 아이템 생성
-           const newItem = {
+            const newItem = {
                 id: generateId(),
-                title: (sharedData.title || '제목 없음').slice(0, 20),
+                title: sharedData.title || '제목 없음',
                 url: sharedData.url || '',
                 memo: sharedData.text || '',
                 createdAt: new Date().toISOString()
@@ -1794,8 +1793,8 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             window.addEventListener('load', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const sharedTitle = urlParams.get('title');
-                const sharedText = urlParams.get('text');
-                const sharedUrl = urlParams.get('url');
+                const sharedText = urlParams.get('url');
+                const sharedUrl = urlParams.get('text');
                 
               if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
