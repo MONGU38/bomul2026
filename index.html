@@ -625,6 +625,7 @@
                         id="itemTitleInput" 
                         class="form-input" 
                         placeholder="자료 제목을 입력하세요"
+                        maxlength="28"
                     >
                 </div>
                 <div class="form-group">
@@ -1725,9 +1726,9 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             if (!sharedData) return;
             
             // 새 아이템 생성
-            const newItem = {
+           const newItem = {
                 id: generateId(),
-                title: sharedData.title || '제목 없음',
+                title: (sharedData.title || '제목 없음').slice(0, 28),
                 url: sharedData.url || '',
                 memo: sharedData.text || '',
                 createdAt: new Date().toISOString()
@@ -1793,8 +1794,8 @@ document.getElementById('resetBtn').addEventListener('click', () => {
             window.addEventListener('load', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const sharedTitle = urlParams.get('title');
-                const sharedText = urlParams.get('text');
-                const sharedUrl = urlParams.get('url');
+                const sharedText = urlParams.get('url');
+                const sharedUrl = urlParams.get('text');
                 
               if (sharedTitle || sharedText || sharedUrl) {
                     console.log('공유된 데이터:', {
@@ -1829,4 +1830,3 @@ document.getElementById('resetBtn').addEventListener('click', () => {
     <input type="file" id="importFile" accept=".json" style="display: none;">
 </body>
 </html>
-
