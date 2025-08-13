@@ -1497,19 +1497,42 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
             const renderFolder = (category, depth = 0) => {
                 const folderDiv = document.createElement('div');
-                folderDiv.style.marginLeft = `${depth * 10}px`;
+                folderDiv.style.marginLeft = `${depth * 20}px`;
                 folderDiv.style.padding = '0.5rem';
                 folderDiv.style.border = '1px solid #e5e7eb';
                 folderDiv.style.borderRadius = '0.25rem';
                 folderDiv.style.margin = '0.25rem 0';
                 folderDiv.style.cursor = 'pointer';
-                folderDiv.style.background = category.id === moveModalData.fromCategoryId ? '#f3f4f6' : 'white';
-                
+                const colorClass = getColorClassForLevel(category.level);
+                folderDiv.className = colorClass;
                 if (category.id === moveModalData.fromCategoryId) {
                     folderDiv.style.opacity = '0.5';
-                    folderDiv.innerHTML = `<span>📁 ${category.name} (현재 위치)</span>`;
+                }
+
+                if (category.id === moveModalData.fromCategoryId) {
+                    folderDiv.style.opacity = '0.5';
+                    const indentBars = '│ '.repeat(Math.max(0, depth));
+                    const levelPrefix = '';
+                    folderDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-family: monospace; color: #888; font-size: 14px;">${indentBars}${levelPrefix}</span>
+                            <span style="font-size: 18px;">📁</span>
+                            <span style="font-weight: 500;">${category.name}</span>
+                            <span style="font-size: 0.75rem; opacity: 0.7; font-weight: bold;">(${category.level}차)</span>
+                            <span style="font-size: 0.75rem; opacity: 0.7; color: #dc2626;">(현재 위치)</span>
+                        </div>
+                    `;
                 } else {
-                    folderDiv.innerHTML = `<span>📁 ${category.name}</span>`;
+                    const indentBars = '│ '.repeat(Math.max(0, depth));
+                    const levelPrefix = '';
+                    folderDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-family: monospace; color: #888; font-size: 14px;">${indentBars}${levelPrefix}</span>
+                            <span style="font-size: 18px;">📁</span>
+                            <span style="font-weight: 500;">${category.name}</span>
+                            <span style="font-size: 0.75rem; opacity: 0.7; font-weight: bold;">(${category.level}차)</span>
+                        </div>
+                    `;
                     folderDiv.onclick = () => moveOrCopyItem(category.id, category.name);
                     folderDiv.onmouseover = () => folderDiv.style.background = '#f9fafb';
                     folderDiv.onmouseout = () => folderDiv.style.background = 'white';
@@ -1688,7 +1711,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
                 
                 // 레벨별 들여쓰기 시각화
                 const indentBars = '│ '.repeat(Math.max(0, depth));
-                const levelPrefix = depth > 0 ? '├─ ' : '';
+                const levelPrefix = '';
                 
                 folderDiv.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
