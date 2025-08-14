@@ -1481,21 +1481,7 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 // Move/Copy Functions
         let moveModalData = null;
 
-        function showMoveModal(itemId, fromCategoryId, itemTitle) {
-            moveModalData = { itemId, fromCategoryId, itemTitle, type: 'move' };
-            document.getElementById('moveModalTitle').textContent = '자료 이동';
-            document.querySelector('#moveModal .modal-content p').textContent = '어느 폴더로 이동하시겠습니까?';
-            renderFolderList();
-            document.getElementById('moveModal').classList.remove('hidden');
-        }
-
-        function showCopyModal(itemId, fromCategoryId, itemTitle) {
-            moveModalData = { itemId, fromCategoryId, itemTitle, type: 'copy' };
-            document.getElementById('moveModalTitle').textContent = '자료 복사';
-            document.querySelector('#moveModal .modal-content p').textContent = '어느 폴더로 복사하시겠습니까?';
-            renderFolderList();
-            document.getElementById('moveModal').classList.remove('hidden');
-        }
+        
 
         function renderFolderList() {
             const folderList = document.getElementById('folderList');
