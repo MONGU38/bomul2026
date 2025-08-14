@@ -1300,13 +1300,13 @@
         <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
             <span style="font-size: 12px;">✏️</span>
         </button>
-        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title}')" title="이동">
+        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="이동">
             <span style="font-size: 12px;">📁</span>
         </button>
-        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
+        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="복사">
             <span style="font-size: 12px;">📋</span>
         </button>
-        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
+        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}', '${category.id}')" title="삭제" style="color: #dc2626;">
             <span style="font-size: 12px;">🗑️</span>
         </button>
     </div>
