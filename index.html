@@ -1230,6 +1230,12 @@
                         <button class="btn-icon" onclick="editingId='${category.id}'; renderApp()" title="이름 수정">
                             <span style="font-size: 14px;">✏️</span>
                         </button>
+                        <button class="btn-icon" onclick="moveCategoryUp('${category.id}')" title="위로 이동">
+                            <span style="font-size: 14px;">⬆️</span>
+                        </button>
+                        <button class="btn-icon" onclick="moveCategoryDown('${category.id}')" title="아래로 이동">
+                            <span style="font-size: 14px;">⬇️</span>
+                        </button>
                         <button class="btn-icon" onclick="showDeleteModal('category', '${category.id}', '${category.name}')" title="삭제" style="color: #dc2626;">
                             <span style="font-size: 14px;">🗑️</span>
                         </button>
@@ -1274,13 +1280,13 @@
                                         <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
                                             <span style="font-size: 12px;">✏️</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title}')" title="이동">
+                                        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="이동">
                                             <span style="font-size: 12px;">📁</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title}')" title="복사">
+                                        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="복사">
                                             <span style="font-size: 12px;">📋</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title}', '${category.id}')" title="삭제" style="color: #dc2626;">
+                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}', '${category.id}')" title="삭제" style="color: #dc2626;">
                                             <span style="font-size: 12px;">🗑️</span>
                                         </button>
                                     </div>
@@ -1612,6 +1618,45 @@ document.getElementById('resetBtn').addEventListener('click', () => {
         function hideMoveModal() {
             moveModalData = null;
             document.getElementById('moveModal').classList.add('hidden');
+        }
+
+         // 폴더 위치 이동 함수들
+        function moveCategoryUp(categoryId) {
+            const category = findCategoryById(categoryId);
+            if (!category) return;
+
+            const parentCategories = category.parentId 
+                ? findCategoryById(category.parentId).children 
+                : categories;
+
+            const index = parentCategories.findIndex(cat => cat.id === categoryId);
+            if (index > 0) {
+                // 배열에서 위치 바꾸기
+                [parentCategories[index], parentCategories[index - 1]] = 
+                [parentCategories[index - 1], parentCategories[index]];
+                
+                saveData();
+                renderApp();
+            }
+        }
+
+        function moveCategoryDown(categoryId) {
+            const category = findCategoryById(categoryId);
+            if (!category) return;
+
+            const parentCategories = category.parentId 
+                ? findCategoryById(category.parentId).children 
+                : categories;
+
+            const index = parentCategories.findIndex(cat => cat.id === categoryId);
+            if (index < parentCategories.length - 1) {
+                // 배열에서 위치 바꾸기
+                [parentCategories[index], parentCategories[index + 1]] = 
+                [parentCategories[index + 1], parentCategories[index]];
+                
+                saveData();
+                renderApp();
+            }
         }
         // 백업 함수
         function exportData() {
