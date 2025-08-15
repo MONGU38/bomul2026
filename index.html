@@ -1306,10 +1306,10 @@
             <span style="font-size: 12px;">📁</span>
         </button>
 
-        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', ${JSON.stringify(item.title)})" title="복사">
+        <button class="btn-icon" onclick='showCopyModal("${item.id}", "${category.id}", ${JSON.stringify(item.title)})' title="복사">
             <span style="font-size: 12px;">📋</span>
         </button>
-        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', ${JSON.stringify(item.title)}, '${category.id}')" title="삭제" style="color: #dc2626;">
+        <button class="btn-icon" onclick='showDeleteModal("item", "${item.id}", ${JSON.stringify(item.title)}, "${category.id}")' title="삭제" style="color: #dc2626;">
             <span style="font-size: 12px;">🗑️</span>
         </button>
     </div>
@@ -1897,6 +1897,21 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 
 
     
+        // 전역 함수 등록
+        window.showDeleteModal = showDeleteModal;
+        window.showMoveModal = showMoveModal;
+        window.showCopyModal = showCopyModal;
+        window.hideMoveModal = hideMoveModal;
+        window.moveOrCopyItem = moveOrCopyItem;
+        window.findCategoryById = findCategoryById;
+        window.toggleCategory = toggleCategory;
+        window.toggleItems = toggleItems;
+        window.showCategoryForm = showCategoryForm;
+        window.showItemForm = showItemForm;
+        window.moveCategoryUp = moveCategoryUp;
+        window.moveCategoryDown = moveCategoryDown;
+        window.updateCategoryName = updateCategoryName;
+
         // Start the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
