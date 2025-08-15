@@ -1033,7 +1033,7 @@
 
         // Item Management
         function saveItem() {
-            const title = (itemTitleInput.value || '제목 없음').replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/g, '').slice(0, 20);
+            const title = (itemTitleInput.value || '제목 없음').slice(0, 20);
             const url = itemUrlInput.value;
             const memo = itemMemoInput.value;
 
@@ -1280,33 +1280,34 @@
                                         <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
                                             <span style="font-size: 12px;">✏️</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="이동">
+                                        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', ${JSON.stringify(item.title)})" title="이동">
                                             <span style="font-size: 12px;">📁</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="복사">
+                                        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', ${JSON.stringify(item.title)})" title="복사">
                                             <span style="font-size: 12px;">📋</span>
                                         </button>
-                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}', '${category.id}')" title="삭제" style="color: #dc2626;">
+                                        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', ${JSON.stringify(item.title)}, '${category.id}')" title="삭제" style="color: #dc2626;">
                                             <span style="font-size: 12px;">🗑️</span>
                                         </button>
                                     </div>
                                 `;
                            } else {
                                itemDiv.innerHTML = `
-                                    <div class="item-content" onclick="${item.url ? `window.open('${item.url}', '_blank')` : `alert('URL이 없습니다!')`}" style="cursor: pointer;">
-                                        <div class="item-title" style="color: #2563eb; text-decoration: underline;">${item.title}</div>
+                                    <div class="item-content">
+                                        <div class="item-title">${item.title}</div>
+                                        ${item.url ? `<div class="item-url" onclick="window.open('${item.url}', '_blank')" style="cursor: pointer; color: #2563eb; text-decoration: underline;">🔗 링크 열기</div>` : ''}
                                     </div>
                                   <div class="item-actions">
         <button class="btn-icon" onclick="showItemForm('${category.id}', ${JSON.stringify(item).replace(/"/g, '&quot;')})" title="수정">
             <span style="font-size: 12px;">✏️</span>
         </button>
-        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="이동">
+        <button class="btn-icon" onclick="showMoveModal('${item.id}', '${category.id}', ${JSON.stringify(item.title)})" title="이동">
             <span style="font-size: 12px;">📁</span>
         </button>
-        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}')" title="복사">
+        <button class="btn-icon" onclick="showCopyModal('${item.id}', '${category.id}', ${JSON.stringify(item.title)})" title="복사">
             <span style="font-size: 12px;">📋</span>
         </button>
-        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', '${item.title.replace(/'/g, '\\\'').replace(/"/g, '\\\"')}', '${category.id}')" title="삭제" style="color: #dc2626;">
+        <button class="btn-icon" onclick="showDeleteModal('item', '${item.id}', ${JSON.stringify(item.title)}, '${category.id}')" title="삭제" style="color: #dc2626;">
             <span style="font-size: 12px;">🗑️</span>
         </button>
     </div>
