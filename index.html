@@ -1033,7 +1033,7 @@
 
         // Item Management
         function saveItem() {
-            const title = (itemTitleInput.value || '제목 없음').slice(0, 20);
+            const title = (itemTitleInput.value || '제목 없음').replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\s]/g, '').slice(0, 20);
             const url = itemUrlInput.value;
             const memo = itemMemoInput.value;
 
