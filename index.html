@@ -1277,9 +1277,7 @@
                                         <div class="item-title" style="color: #2563eb; text-decoration: underline;">${item.title}</div>
                                     </div>
                                     <div class="item-actions">
-                                        <button class="btn-icon" onclick='showItemForm("${category.id}", ${JSON.stringify({...item, categoryId: category.id}).replace(/"/g, "&quot;")})' title="수정">
-                                            <span style="font-size: 12px;">✏️</span>
-                                        </button>
+                                        
                                         <button class="btn-icon" onclick='showMoveModal("${item.id}", "${category.id}", ${JSON.stringify(item.title)})' title="이동">
                                             <span style="font-size: 12px;">📁</span>
                                         </button>
