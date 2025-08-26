@@ -1210,37 +1210,40 @@
                                 onblur="updateCategoryName('${category.id}', this.value)"
                                 id="editInput${category.id}"
                             >
-                            <button class="btn-icon" onclick="editingId=null; renderApp()" title="취소">
-                                <span style="font-size: 14px;">❌</span>
-                            </button>
+                            
                         ` : `
                             <span class="category-name">${category.name}</span>
                             ${hasItems ? `<span class="item-count">${category.items.length}개</span>` : ''}
                         `}
                     </div>
                     <div class="category-right">
-                        <button class="btn-icon" onclick="showItemForm('${category.id}')" title="자료 추가">
-                            <span style="font-size: 14px;">📄</span>
-                        </button>
-                        ${category.level < 4 ? `
+                        ${editingId === category.id ? `
+                            <button class="btn-icon" onclick="updateCategoryName('${category.id}', document.getElementById('editInput${category.id}').value)" title="확정">
+                                <span style="font-size: 14px;">✅</span>
+                            </button>
+                        ` : `
+                            <button class="btn-icon" onclick="showItemForm('${category.id}')" title="자료 추가">
+                                <span style="font-size: 14px;">📄</span>
+                            </button>
+                            ${category.level < 4 ? `
     <button class="btn-icon" onclick="showCategoryForm(findCategoryById('${category.id}'))" title="서브 카테고리 추가">
         <span style="font-size: 14px;">+</span>
     </button>
 ` : ''}
-                        <button class="btn-icon" onclick="editingId='${category.id}'; renderApp()" title="이름 수정">
-                            <span style="font-size: 14px;">✏️</span>
-                        </button>
-                        <button class="btn-icon" onclick="moveCategoryUp('${category.id}')" title="위로 이동">
-                            <span style="font-size: 14px;">⬆️</span>
-                        </button>
-                        <button class="btn-icon" onclick="moveCategoryDown('${category.id}')" title="아래로 이동">
-                            <span style="font-size: 14px;">⬇️</span>
-                        </button>
-                        <button class="btn-icon" onclick="showDeleteModal('category', '${category.id}', '${category.name}')" title="삭제" style="color: #dc2626;">
-                            <span style="font-size: 14px;">🗑️</span>
-                        </button>
+                            <button class="btn-icon" onclick="editingId='${category.id}'; renderApp()" title="이름 수정">
+                                <span style="font-size: 14px;">✏️</span>
+                            </button>
+                            <button class="btn-icon" onclick="moveCategoryUp('${category.id}')" title="위로 이동">
+                                <span style="font-size: 14px;">⬆️</span>
+                            </button>
+                            <button class="btn-icon" onclick="moveCategoryDown('${category.id}')" title="아래로 이동">
+                                <span style="font-size: 14px;">⬇️</span>
+                            </button>
+                            <button class="btn-icon" onclick="showDeleteModal('category', '${category.id}', '${category.name}')" title="삭제" style="color: #dc2626;">
+                                <span style="font-size: 14px;">🗑️</span>
+                            </button>
+                        `}
                     </div>
-                </div>
             `;
 
             if (isExpanded) {
