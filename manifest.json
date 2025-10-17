@@ -2,7 +2,7 @@
   "name": "보물창고",
   "short_name": "보물창고",
   "description": "중요한 자료를 카테고리별로 정리하는 앱",
-  "start_url": "./index.html",
+  "start_url": "/bomul2026/",
   "display": "standalone",
   "background_color": "#fef7ed",
   "theme_color": "#f97316",
@@ -27,7 +27,7 @@
     }
 ],
 "share_target": {
-    "action": "./index.html",
+    "action": "/bomul2026/",
     "method": "GET",
     "params": {
       "title": "title",
